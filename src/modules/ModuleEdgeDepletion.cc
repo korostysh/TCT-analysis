@@ -134,7 +134,7 @@ bool ModuleEdgeDepletion::Analysis() {
         if(derivative[i]>max_der) max_der=derivative[i];
     }
 
-    int i_start,i_finish,i_plato;
+    int i_start,i_finish,i_plato=0;
     bool f_start,f_finish;
     f_start = false;
     f_finish = false;
@@ -143,6 +143,9 @@ bool ModuleEdgeDepletion::Analysis() {
         if(!f_finish && f_start && derivative[i]<=DEPL_THRESHOLD*max_der) {i_finish=i-1; f_finish=true;}
         if(f_finish && derivative[i]<=DEPL_THRESHOLD*max_der) {i_plato=i; break;}
     }
+    if (!f_start) i_start = 0;
+    if (!f_finish) i_finish = numVolt-1;
+    if (i_plato == 0) i_plato = i_finish;
     Float_t dv = abs(voltages[1]-voltages[0]);
     depl_fit1->SetRange(sqrt(i_start*dv),sqrt(i_finish*dv));
     depl_fit2->SetRange(sqrt(i_plato*dv),sqrt(voltages[numVolt-1]));
@@ -174,11 +177,15 @@ bool ModuleEdgeDepletion::Analysis() {
 
         f_start = false;
         f_finish = false;
+        i_plato = 0;
         for(int i=0;i<numVolt;i++) {
             if(!f_start && derivative[i]>DEPL_THRESHOLD*max_der) {i_start=i; f_start=true;}
             if(!f_finish && f_start && derivative[i]<=DEPL_THRESHOLD*max_der) {i_finish=i-1; f_finish=true;}
             if(f_finish && derivative[i]<=DEPL_THRESHOLD*max_der) {i_plato=i; break;}
         }
+        if (!f_start) i_start = 0;
+        if (!f_finish) i_finish = numVolt-1;
+        if (i_plato == 0) i_plato = i_finish;
         depl_fit1->SetRange(sqrt(i_start*dv),sqrt(i_finish*dv));
         depl_fit2->SetRange(sqrt(i_plato*dv),sqrt(voltages[numVolt-1]));
 

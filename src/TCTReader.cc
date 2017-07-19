@@ -877,7 +877,7 @@ void TCTReader::CorrectPolarity(Int_t ChId)
     Double_t binval;
     Int_t Num=numxyz*NU1*NU2; //number of all waveforms
 
-    Int_t polarity;
+    Int_t polarity = 0;
 
     for(j=0;j<Num;j++)
     {
