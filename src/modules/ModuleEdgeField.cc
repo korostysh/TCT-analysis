@@ -361,7 +361,7 @@ Double_t ModuleEdgeField::Mu(Double_t E, Int_t Type) {
 
     if(Type==1) return config->mu0_holes()/(1.+config->mu0_holes()*E/config->v_sat());
     if(Type==0) return config->mu0_els()/sqrt(1.+config->mu0_els()*E/config->v_sat()*config->mu0_els()*E/config->v_sat());
-
+    else return 0;
 }
 
 /// Function used in the bisection method
