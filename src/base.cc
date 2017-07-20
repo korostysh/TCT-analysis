@@ -397,6 +397,7 @@ void base::on_window_parameters_clicked()
 
 void base::on_start_clicked()
 {
+    this->kill_tbrowser();
     if(ui->modes->currentIndex() == 0) start_osc();
     if(ui->modes->currentIndex() == 1) start_tct();
 }
