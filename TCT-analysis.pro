@@ -14,8 +14,8 @@ win32:INCLUDEPATH += C:\root\root_v5.34.34\include\
 
 # For Linux
 unix:QMAKE_CXXFLAGS += -std=c++11
-unix:LIBS += -L/home/maren/GEANT4/root_v5.34.34_install/lib/root -lCore -lMathCore -lTree -lCint -lRIO -lNet -lThread -lHist -lMatrix
-unix:INCLUDEPATH += /home/maren/GEANT4/root_v5.34.34_install/include/root\
+unix:LIBS += -L/home/sasha/Root/root/lib/ -lCore -lMathCore -lTree -lCint -lRIO -lNet -lThread -lHist -lMatrix
+unix:INCLUDEPATH += /home/sasha/Root/root/include\
 
 # General
 INCLUDEPATH += include
@@ -42,7 +42,8 @@ HEADERS += \
     include/tct_config.h \
     include/TCTModule.h \
     include/TCTReader.h \
-    include/util.h
+    include/util.h \
+    include/modules/ModuleTopFindSensor.h
 
 SOURCES += \
     src/modules/ModuleEdgeDepletion.cc \
@@ -64,7 +65,8 @@ SOURCES += \
     src/tct_config.cc \
     src/TCTModule.cc \
     src/TCTReader.cc \
-    src/util.cc
+    src/util.cc \
+    src/modules/ModuleTopFindSensor.cc
 
 FORMS += \
     forms/form_sample.ui \

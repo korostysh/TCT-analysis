@@ -14,6 +14,7 @@
 #include "modules/ModuleEdgeFocus.h"
 #include "modules/ModuleEdgeDepletion.h"
 #include "modules/ModuleEdgeField.h"
+#include "modules/ModuleTopFindSensor.h"
 
 namespace TCT {
 
@@ -52,6 +53,10 @@ void tct_config::SetParameters(std::map<std::string, std::string> id_val){
         if(i.first == "Focus_Search")		{
             RegisterModule(new ModuleTopFocus(this,"Focus_Search",_Top,"Focus Search"),static_cast<bool>(atoi((i.second).c_str())));
             RegisterModule(new ModuleEdgeFocus(this,"Focus_Search",_Edge,"Focus Search"),static_cast<bool>(atoi((i.second).c_str())));
+        }
+        if(i.first == "Sensor_Search")		{
+            RegisterModule(new ModuleTopFindSensor(this,"Sensor_Search",_Top,"Sensor Position Search"),static_cast<bool>(atoi((i.second).c_str())));
+            RegisterModule(new ModuleTopFindSensor(this,"Sensor_Search",_Edge,"Sensor Position Search"),static_cast<bool>(atoi((i.second).c_str())));
         }
         if(i.first == "TopDepletionVoltage")		RegisterModule(new ModuleTopDepletion(this,"TopDepletionVoltage",_Top,"Depletion Voltage"),static_cast<bool>(atoi((i.second).c_str())));
         if(i.first == "TopMobility")                RegisterModule(new ModuleTopMobility(this,"TopMobility",_Top,"Charge Carriers Mobility"),static_cast<bool>(atoi((i.second).c_str())));
