@@ -178,25 +178,25 @@ bool Scanning::CreateOutputFile() {
     bool Scanning::CheckData() {
 
         std::cout<<"Checking Channels set:"<<std::endl;
-        std::cout<<"\t- Detector Signal Channel: "<< config->CH1_Det() <<std::endl;
+        std::cout<<"\t- Detector Signal Channel 1: "<< config->CH1_Det() <<std::endl;
         if(config->CH1_Det()) {
             if(stct->WFOnOff[config->CH1_Det()-1]) std::cout<<"\t\t Data OK"<<std::endl;
             else {
                 std::cout<<"\t\t This channel has no data. Please check the settings."<<std::endl;
-                std::cout<<"\t- Detector Signal Channel: "<< config->CH2_Det() <<std::endl;
-                if(config->CH2_Det()) {
-                    if(stct->WFOnOff[config->CH2_Det()-1]) std::cout<<"\t\t Data OK"<<std::endl;
-                    else {
-                        std::cout<<"\t\t This channel has no data. Please check the settings."<<std::endl;
-                        return false;
-                    }
-                }
-
+                return false;
+            }
+        }
+        std::cout<<"\t- Detector Signal Channel 2: "<< config->CH2_Det() <<std::endl;
+        if(config->CH2_Det()) {
+            if(stct->WFOnOff[config->CH2_Det()-1]) std::cout<<"\t\t Data OK"<<std::endl;
+            else {
+                std::cout<<"\t\t This channel has no data. Please check the settings."<<std::endl;
+                return false;
             }
         }
 
 
-        else {
+        if(!(config->CH1_Det() || config->CH2_Det())) {
             std::cout<<"\t\t No data channel specified! Non-sense!"<<std::endl;
             return false;
         }
