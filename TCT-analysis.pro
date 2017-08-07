@@ -43,7 +43,8 @@ HEADERS += \
     include/TCTModule.h \
     include/TCTReader.h \
     include/util.h \
-    include/modules/ModuleTopFindSensor.h
+    include/modules/ModuleTopFindSensor.h \
+    include/modules/ModuleDoubleChannelAnalysis.h
 
 SOURCES += \
     src/modules/ModuleEdgeDepletion.cc \
@@ -66,7 +67,8 @@ SOURCES += \
     src/TCTModule.cc \
     src/TCTReader.cc \
     src/util.cc \
-    src/modules/ModuleTopFindSensor.cc
+    src/modules/ModuleTopFindSensor.cc \
+    src/modules/ModuleDoubleChannelAnalysis.cc
 
 FORMS += \
     forms/form_sample.ui \

@@ -30,17 +30,21 @@ private :
     std::vector<TCTModule*> tct_modules;
 
     //scanning parameters
-    uint32_t _CH_Det;
+    uint32_t _CH1_Det;
+    uint32_t _CH2_Det;
     uint32_t _CH_PhDiode;
     uint32_t _CH_Trig;
     uint32_t _OptAxis;
     uint32_t _VoltSource;
     uint32_t _ScAxis;
     float _FFWHM;
-    float _FTlow;
-    float _FThigh;
+    float _FTlowCH1;
+    float _FThighCH1;
+    float _FTlowCH2;
+    float _FThighCH2;
     float _FDLow;
     float _FDHigh;
+
     bool _FSeparateCharges;
     bool _FSeparateWaveforms;
     float _Movements_dt;
@@ -62,7 +66,8 @@ public:
     tct_config() :
         _OutFolder("../results/"),
         _DataFolder("def"),
-        _CH_Det(0),
+        _CH1_Det(0),
+        _CH2_Det(0),
         _CH_PhDiode(0),
         _CH_Trig(0),
         _OptAxis(3),
@@ -92,9 +97,13 @@ public:
     const uint32_t & TCT_Mode() const { return _TCT_Mode;}
 
     //begin scanning section
-    uint32_t CH_Det() { return _CH_Det;}
-    void SetCH_Det(uint32_t val) { _CH_Det = val;}
-    const uint32_t & CH_Det() const { return _CH_Det;}
+    uint32_t CH1_Det() { return _CH1_Det;}
+    void SetCH1_Det(uint32_t val) { _CH1_Det = val;}
+    const uint32_t & CH1_Det() const { return _CH1_Det;}
+
+    uint32_t CH2_Det() { return _CH2_Det;}
+    void SetCH2_Det(uint32_t val) { _CH2_Det = val;}
+    const uint32_t & CH2_Det() const { return _CH2_Det;}
 
     uint32_t CH_PhDiode() { return _CH_PhDiode;}
     void SetCH_PhDiode(uint32_t val) { _CH_PhDiode = val;}
@@ -120,13 +129,21 @@ public:
     void SetFFWHM(float val) { _FFWHM = val;}
     const float & FFWHM() const { return _FFWHM;}
 
-    float FTlow() { return _FTlow;}
-    void SetFTlow(float val) { _FTlow = val;}
-    const float & FTlow() const { return _FTlow;}
+    float FTlowCH1() { return _FTlowCH1;}
+    void SetFTlowCH1(float val) { _FTlowCH1 = val;}
+    const float & FTlowCH1() const { return _FTlowCH1;}
 
-    float FThigh() { return _FThigh;}
-    void SetFThigh(float val) { _FThigh = val;}
-    const float & FThigh() const { return _FThigh;}
+    float FThighCH1() { return _FThighCH1;}
+    void SetFThighCH1(float val) { _FThighCH1 = val;}
+    const float & FThighCH1() const { return _FThighCH1;}
+
+    float FTlowCH2() { return _FTlowCH2;}
+    void SetFTlowCH2(float val) { _FTlowCH2 = val;}
+    const float & FTlowCH2() const { return _FTlowCH2;}
+
+    float FThighCH2() { return _FThighCH2;}
+    void SetFThighCH2(float val) { _FThighCH2 = val;}
+    const float & FThighCH2() const { return _FThighCH2;}
 
     float FDLow() { return _FDLow;}
     void SetFDLow(float val) { _FDLow = val;}

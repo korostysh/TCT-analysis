@@ -13,7 +13,7 @@ bool ModuleTopMobility::Analysis() {
 
     Int_t numVolt;
 
-    Int_t ChNumber=(config->CH_Det())-1;              // select the oscilloscope channel
+    Int_t ChNumber=(config->CH1_Det())-1;              // select the oscilloscope channel
     Int_t volt_source=(config->VoltSource());            // select
     Float_t *voltages;
 

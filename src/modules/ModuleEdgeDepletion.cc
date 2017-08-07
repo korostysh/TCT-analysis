@@ -18,7 +18,7 @@ bool ModuleEdgeDepletion::Analysis() {
     Int_t numVolt,numS;
     Float_t Ss,Sc0;
 
-    Int_t ChNumber=(config->CH_Det())-1;              // select the oscilloscope channel
+    Int_t ChNumber=(config->CH1_Det())-1;              // select the oscilloscope channel
     Int_t volt_source=(config->VoltSource());            // select
     Int_t scanning_axis=config->ScAxis()-1;         // select scanning axis (0=x,1=y,2=z)
     Float_t *voltages;
@@ -40,7 +40,7 @@ bool ModuleEdgeDepletion::Analysis() {
     SwitchAxis(scanning_axis,numS,Ss,Sc0);
 
     //calculate charge profiles for different voltages
-    CalculateCharges(ChNumber,volt_source+2,numVolt,scanning_axis,numS,cc,config->FTlow(),config->FThigh());
+    CalculateCharges(ChNumber,volt_source+2,numVolt,scanning_axis,numS,cc,config->FTlowCH1(),config->FThighCH1());
 
     //calculate laser charge profiles
     if(config->CH_PhDiode()) CalculateCharges(config->CH_PhDiode()-1,volt_source+2,numVolt,scanning_axis,numS,ph_charge,config->FDLow(),config->FDHigh());

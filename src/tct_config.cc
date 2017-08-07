@@ -15,6 +15,7 @@
 #include "modules/ModuleEdgeDepletion.h"
 #include "modules/ModuleEdgeField.h"
 #include "modules/ModuleTopFindSensor.h"
+#include "modules/ModuleDoubleChannelAnalysis.h"
 
 namespace TCT {
 
@@ -32,14 +33,17 @@ void tct_config::SetParameters(std::map<std::string, std::string> id_val){
         if(i.first == "DataFolder")	_DataFolder = i.second;
 
         //tct scanning mode parameters
-        if(i.first == "CH_Detector")		_CH_Det = atoi((i.second).c_str());
+        if(i.first == "CH1_Detector")		_CH1_Det = atoi((i.second).c_str());
+        if(i.first == "CH2_Detector")		_CH2_Det = atoi((i.second).c_str());
         if(i.first == "CH_Photodiode")	_CH_PhDiode = atoi((i.second).c_str());
         if(i.first == "CH_Trigger")		_CH_Trig = atoi((i.second).c_str());
         if(i.first == "Optical_Axis")		_OptAxis = atoi((i.second).c_str());
         if(i.first == "Scanning_Axis")    _ScAxis = atoi((i.second).c_str());
         if(i.first == "FWHM")             _FFWHM = atof((i.second).c_str());
-        if(i.first == "TimeSensorLow")    _FTlow = atof((i.second).c_str());
-        if(i.first == "TimeSensorHigh")   _FThigh = atof((i.second).c_str());
+        if(i.first == "TimeSensorLow1")    _FTlowCH1 = atof((i.second).c_str());
+        if(i.first == "TimeSensorHigh1")   _FThighCH1 = atof((i.second).c_str());
+        if(i.first == "TimeSensorLow2")    _FTlowCH2 = atof((i.second).c_str());
+        if(i.first == "TimeSensorHigh2")   _FThighCH2 = atof((i.second).c_str());
         if(i.first == "TimeDiodeLow")     _FDLow = atof((i.second).c_str());
         if(i.first == "TimeDiodeHigh")    _FDHigh = atof((i.second).c_str());
         if(i.first == "SaveSeparateCharges")		_FSeparateCharges = static_cast<bool>(atoi((i.second).c_str()));
@@ -58,6 +62,7 @@ void tct_config::SetParameters(std::map<std::string, std::string> id_val){
             RegisterModule(new ModuleTopFindSensor(this,"Sensor_Search",_Top,"Sensor Position Search"),static_cast<bool>(atoi((i.second).c_str())));
             RegisterModule(new ModuleTopFindSensor(this,"Sensor_Search",_Edge,"Sensor Position Search"),static_cast<bool>(atoi((i.second).c_str())));
         }
+        if(i.first == "Double_Channel_Analysis")    RegisterModule(new ModuleDoubleChannelAnalysis(this,"Double_Channel_Analysis",_Top,"Double Channel Analysis"),static_cast<bool>(atoi((i.second).c_str())));
         if(i.first == "TopDepletionVoltage")		RegisterModule(new ModuleTopDepletion(this,"TopDepletionVoltage",_Top,"Depletion Voltage"),static_cast<bool>(atoi((i.second).c_str())));
         if(i.first == "TopMobility")                RegisterModule(new ModuleTopMobility(this,"TopMobility",_Top,"Charge Carriers Mobility"),static_cast<bool>(atoi((i.second).c_str())));
         if(i.first == "EdgeDepletionVoltage")		RegisterModule(new ModuleEdgeDepletion(this,"EdgeDepletionVoltage",_Edge,"Depletion Voltage"),static_cast<bool>(atoi((i.second).c_str())));

@@ -13,7 +13,7 @@ bool ModuleTopDepletion::Analysis() {
 
     Int_t numVolt;
 
-    Int_t ChNumber=(config->CH_Det())-1;              // select the oscilloscope channel
+    Int_t ChNumber=(config->CH1_Det())-1;              // select the oscilloscope channel
     Int_t volt_source=(config->VoltSource());            // select
     Float_t *voltages;
 
@@ -31,7 +31,7 @@ bool ModuleTopDepletion::Analysis() {
     TGraph **ph_charge = new TGraph*[1];
 
     //calculate charge profiles for different voltages
-    CalculateCharges(ChNumber,0,1,volt_source+2,numVolt,cc,config->FTlow(),config->FThigh());
+    CalculateCharges(ChNumber,0,1,volt_source+2,numVolt,cc,config->FTlowCH1(),config->FThighCH1());
 
     //calculate laser charge profiles
     if(config->CH_PhDiode()) CalculateCharges(config->CH_PhDiode()-1,0,1,volt_source+2,numVolt,ph_charge,config->FDLow(),config->FDHigh());

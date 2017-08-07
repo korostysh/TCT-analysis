@@ -46,8 +46,11 @@ namespace TCT {
         // CheckData: check if channels are set in config file 
         if(!CheckData()) {std::cout<<"File "<<filename<<" contains not enough data for selected operations. Skipping."<<std::endl; delete stct; return false;}
 
-        //If detector signal is positive, make in negative
-        stct->CorrectPolarity((config->CH_Det())-1);
+        //If detector signal at channel 1 is positive, make in negative
+        stct->CorrectPolarity((config->CH1_Det())-1);
+
+        //If detector signal at channel 2 is positive, make in negative
+        stct->CorrectPolarity((config->CH2_Det())-1);
 
         //create output file
         CreateOutputFile();
@@ -128,14 +131,14 @@ bool Scanning::CreateOutputFile() {
                 sample_hist = stct->GetHA(i,0,0,0,0,0); // get one sample from each channel
                 sample_hist->Write();
             }
-            if(config->FSeparateWaveforms() && (i+1)==config->CH_Det() && stct->WFOnOff[i]) { //loop over all waveforms
+            if(config->FSeparateWaveforms() && (i+1)==config->CH1_Det() && stct->WFOnOff[i]) { //loop over all waveforms
                 f_rootfile->cd("detector_signals");
                 for(int l=0;l<stct->NU2;l++) {
                     for(int n=0;n<stct->NU1;n++) {
                         for(int j=0;j<stct->Nz;j++) {
                             for(int k=0;k<stct->Ny;k++) {
                                 for(int m=0;m<stct->Nx;m++) {
-                                    sample_hist = stct->GetHA(config->CH_Det()-1,m,k,j,n,l);
+                                    sample_hist = stct->GetHA(config->CH1_Det()-1,m,k,j,n,l);
                                     sample_hist->Write();
                                 }
                             }
@@ -143,10 +146,30 @@ bool Scanning::CreateOutputFile() {
 
                     }
                 }
+
+                f_rootfile->cd("sample_signals");
+            }
+            if(config->FSeparateWaveforms() && (i+1)==config->CH2_Det() && stct->WFOnOff[i]) { //loop over all waveforms
+                f_rootfile->cd("detector_signals");
+                for(int l=0;l<stct->NU2;l++) {
+                    for(int n=0;n<stct->NU1;n++) {
+                        for(int j=0;j<stct->Nz;j++) {
+                            for(int k=0;k<stct->Ny;k++) {
+                                for(int m=0;m<stct->Nx;m++) {
+                                    sample_hist = stct->GetHA(config->CH2_Det()-1,m,k,j,n,l);
+                                    sample_hist->Write();
+                                }
+                            }
+                        }
+
+                    }
+                }
+
                 f_rootfile->cd("sample_signals");
             }
         }
         f_rootfile->cd();
+
 
         return true;
     }
@@ -155,14 +178,24 @@ bool Scanning::CreateOutputFile() {
     bool Scanning::CheckData() {
 
         std::cout<<"Checking Channels set:"<<std::endl;
-        std::cout<<"\t- Detector Signal Channel: "<< config->CH_Det() <<std::endl;
-        if(config->CH_Det()) {
-            if(stct->WFOnOff[config->CH_Det()-1]) std::cout<<"\t\t Data OK"<<std::endl;
+        std::cout<<"\t- Detector Signal Channel: "<< config->CH1_Det() <<std::endl;
+        if(config->CH1_Det()) {
+            if(stct->WFOnOff[config->CH1_Det()-1]) std::cout<<"\t\t Data OK"<<std::endl;
             else {
                 std::cout<<"\t\t This channel has no data. Please check the settings."<<std::endl;
-                return false;
+                std::cout<<"\t- Detector Signal Channel: "<< config->CH2_Det() <<std::endl;
+                if(config->CH2_Det()) {
+                    if(stct->WFOnOff[config->CH2_Det()-1]) std::cout<<"\t\t Data OK"<<std::endl;
+                    else {
+                        std::cout<<"\t\t This channel has no data. Please check the settings."<<std::endl;
+                        return false;
+                    }
+                }
+
             }
         }
+
+
         else {
             std::cout<<"\t\t No data channel specified! Non-sense!"<<std::endl;
             return false;

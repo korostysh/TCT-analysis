@@ -31,7 +31,7 @@ bool ModuleEdgeField::Analysis() {
     Int_t numVolt,numS;
     Float_t Ss,Sc0;
 
-    Int_t ChNumber=(config->CH_Det())-1;              // select the oscilloscope channel
+    Int_t ChNumber=(config->CH1_Det())-1;              // select the oscilloscope channel
     Int_t volt_source=(config->VoltSource());            // select
     Int_t scanning_axis=config->ScAxis()-1;         // select scanning axis (0=x,1=y,2=z)
     Float_t *voltages;
@@ -62,7 +62,7 @@ bool ModuleEdgeField::Analysis() {
 
 
     //calculate charge profiles for different voltages
-    CalculateCharges(ChNumber,volt_source+2,numVolt,scanning_axis,numS,cc,config->FTlow(),config->FTlow()+GetEV_Time());
+    CalculateCharges(ChNumber,volt_source+2,numVolt,scanning_axis,numS,cc,config->FTlowCH1(),config->FTlowCH1()+GetEV_Time());
 
     //find integration ranges (for the maximal voltage in scan, hope that sensor is fully depleted
     //otherwise may be a problem with right edge
@@ -72,7 +72,7 @@ bool ModuleEdgeField::Analysis() {
       case 1: wf0 = stct->Projection(ChNumber,scanning_axis,0,0,0,numVolt-1,0,numS); break;
       case 2: wf0 = stct->Projection(ChNumber,scanning_axis,0,0,0,0,numVolt-1,numS); break;
       }
-    TGraph *charge_max_bias = wf0->CCE(config->FTlow(),config->FThigh());
+    TGraph *charge_max_bias = wf0->CCE(config->FTlowCH1(),config->FThighCH1());
     delete wf0;
     Double_t left_edge,right_edge;
     FindEdges(charge_max_bias,numS,Ss,left_edge,right_edge);

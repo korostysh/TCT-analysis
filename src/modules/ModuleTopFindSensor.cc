@@ -23,7 +23,7 @@ bool ModuleTopFindSensor::Analysis() {
     Float_t Ss1,Sc0_1;                       // Optical axis step
     Float_t Ss2,Sc0_2;
 
-    Int_t ChNumber=(config->CH_Det())-1;              // select the oscilloscope channel
+    Int_t ChNumber=(config->CH1_Det())-1;              // select the oscilloscope channel
     Int_t scanning2_axis= 3 - (config->ScAxis()-1) - (config->OptAxis()-1);            // selecting scaning axis2 which is not scaning axis1 and not optic (0=x,1=y,2=z)
     Int_t scanning1_axis=config->ScAxis()-1;         // select scanning axis1 (0=x,1=y,2=z)
 
@@ -37,13 +37,13 @@ bool ModuleTopFindSensor::Analysis() {
 
 
      //calculate the arb charge from the current
-    CalculateCharges(ChNumber,scanning2_axis,numS2,scanning1_axis,numS1,cc,config->FTlow(),config->FThigh());
+    CalculateCharges(ChNumber,scanning1_axis,numS1,scanning2_axis,numS2,cc,config->FTlowCH1(),config->FThighCH1());
     int k = 0;
     Double_t *y_values = 0;
-    for (int i = 0 ; i < numS2; i++ ){
+    for (int i = 0 ; i < numS1; i++ ){
         y_values = cc[i]->GetY();
-        for (int j = 0; j < numS1; j++){
-           collecting_map->SetPoint(k,(Sc0_1+j*Ss1),(Sc0_2+i*Ss2),y_values[j]); //NOTE change scaning axis
+        for (int j = 0; j <  numS2; j++){
+           collecting_map->SetPoint(k,(Sc0_1+i*Ss1),(Sc0_2+j*Ss2),y_values[j]); //NOTE change scaning axis
            k++;
         }
     }
@@ -85,7 +85,7 @@ bool ModuleTopFindSensor::CheckModuleData() {
     case 2: NOpt = stct->Ny; break;
     case 3: NOpt = stct->Nz; break;
     }
-    if(numS1>=5) std::cout<<"\t\t\tFirst scaning axis scan contains "<<numS1<<" points. OK"<<std::endl;
+    if(numS1>=1) std::cout<<"\t\t\tFirst scaning axis scan contains "<<numS1<<" points. OK"<<std::endl;
     else {
         std::cout<<"\t\t\tFirst scaning axis contains only "<<numS1<<" points. Not enough for sensor search."<<std::endl;
         return false;
@@ -96,7 +96,7 @@ bool ModuleTopFindSensor::CheckModuleData() {
     case 2: NSc = stct->Ny; break;
     case 3: NSc = stct->Nz; break;
     }
-    if(numS2>5) std::cout<<"\t\t\tSecond scaning axis contains "<<numS2<<" points. OK"<<std::endl;
+    if(numS2>=1) std::cout<<"\t\t\tSecond scaning axis contains "<<numS2<<" points. OK"<<std::endl;
     else {
         std::cout<<"\t\t\tSecond scaning axis contains only "<<numS2<<" point. Not enough for sensor search."<<std::endl;
         return false;

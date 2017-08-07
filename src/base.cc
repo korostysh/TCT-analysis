@@ -1,4 +1,4 @@
-﻿/**
+/**
  * \file
  * \brief Implementation of Ui::base methods.
  */
@@ -167,11 +167,18 @@ void base::fill_config() {
 
     // tct config
 
-    ui->cc_ch_1->setChecked(config_tct->CH_Det());
-    if(config_tct->CH_Det()) {
-        ui->cc_ch_num_1->setCurrentIndex(config_tct->CH_Det()-1);
-        ui->tlow_1->setText(QString::number(config_tct->FTlow()));
-        ui->thigh_1->setText(QString::number(config_tct->FThigh()));
+    ui->cc_ch_1->setChecked(config_tct->CH1_Det());
+    if(config_tct->CH1_Det()) {
+        ui->cc_ch_num_1->setCurrentIndex(config_tct->CH1_Det()-1);
+        ui->tlow_1->setText(QString::number(config_tct->FTlowCH1()));
+        ui->thigh_1->setText(QString::number(config_tct->FThighCH1()));
+
+    }
+    ui->cc_ch_2->setChecked(config_tct->CH2_Det());
+    if(config_tct->CH2_Det()) {
+        ui->cc_ch_num_2->setCurrentIndex(config_tct->CH2_Det()-1);
+        ui->tlow_2->setText(QString::number(config_tct->FTlowCH2()));
+        ui->thigh_2->setText(QString::number(config_tct->FThighCH2()));
 
     }
     ui->cc_ch_ph->setChecked(config_tct->CH_PhDiode());
@@ -255,11 +262,18 @@ void base::tovariables_config() {
     // tct part
 
     if(ui->cc_ch_1->isChecked()) {
-        config_tct->SetCH_Det(ui->cc_ch_num_1->currentText().toInt());
-        config_tct->SetFTlow(ui->tlow_1->text().toFloat());
-        config_tct->SetFThigh(ui->thigh_1->text().toFloat());
+        config_tct->SetCH1_Det(ui->cc_ch_num_1->currentText().toInt());
+        config_tct->SetFTlowCH1(ui->tlow_1->text().toFloat());
+        config_tct->SetFThighCH1(ui->thigh_1->text().toFloat());
     }
-    else config_tct->SetCH_Det(0);
+    else config_tct->SetCH1_Det(0);
+
+    if(ui->cc_ch_2->isChecked()) {
+        config_tct->SetCH2_Det(ui->cc_ch_num_2->currentText().toInt());
+        config_tct->SetFTlowCH2(ui->tlow_2->text().toFloat());
+        config_tct->SetFThighCH2(ui->thigh_2->text().toFloat());
+    }
+    else config_tct->SetCH2_Det(0);
 
     if(ui->cc_ch_ph->isChecked()) {
         config_tct->SetCH_PhDiode(ui->cc_ch_num_ph->currentText().toInt());
@@ -654,7 +668,8 @@ void base::on_actionSave_config_triggered()
 
     conf_file<<"\n\n[Scanning]";
     conf_file<<"\n#Channels of oscilloscope connected to detector, photodiode, trigger. Put numbers 1,2,3,4 - corresponding to channels, no such device connected put 0.";
-    conf_file<<"\nCH_Detector\t=\t"<<config_tct->CH_Det();
+    conf_file<<"\nCH1_Detector\t=\t"<<config_tct->CH1_Det();
+    conf_file<<"\nCH2_Detector\t=\t"<<config_tct->CH2_Det();
     conf_file<<"\n#Turning on of the Photodiode channel also adds normalisation to all scans";
     conf_file<<"\nCH_Photodiode\t=\t"<<config_tct->CH_PhDiode();
     conf_file<<"\nCH_Trigger\t=\t"<<config_tct->CH_Trig();
@@ -675,29 +690,40 @@ void base::on_actionSave_config_triggered()
 
     bool focus_top = false;
     bool focus_edge = false;
+    bool sensor_search_top = false;
+    bool sensor_search_edge = false;
     for(int i=0; i<config_tct->GetNumberOfModules(); i++) {
         TCT::TCTModule* module = config_tct->GetModule(i);
         if(strcmp(module->GetName(),"Focus_Search")==0) {
             if((int)module->GetType()==0) focus_top = module->isEnabled();
             if((int)module->GetType()==1) focus_edge = module->isEnabled();
         }
+        if(strcmp(module->GetName(),"Sensor_Search")==0) {
+            if((int)module->GetType()==0) sensor_search_top = module->isEnabled();
+            if((int)module->GetType()==1) sensor_search_edge = module->isEnabled();
+        }
     }
+    conf_file<<"\n\n#Scanning over X and Y to find position of the sensor.";
+    conf_file<<"\n"<<"Sensor_Search"<<"\t=\t"<<(sensor_search_top || sensor_search_edge);
+
     conf_file<<"\n\n#Scanning over optical and perpendiculr to strip axes (or along the detector depth in case of edge-tct), fitting the best position.";
     conf_file<<"\n"<<"Focus_Search"<<"\t=\t"<<(focus_top || focus_edge);
 
-
     for(int i=0; i<config_tct->GetNumberOfModules(); i++) {
         TCT::TCTModule* module = config_tct->GetModule(i);
-        if(strcmp(module->GetName(),"Focus_Search")!=0) {
+        if(strcmp(module->GetName(),"Focus_Search")!=0 && strcmp(module->GetName(),"Sensor_Search")!=0) {
             conf_file<<"\n#"<<module->GetTitle();
             conf_file<<"\n"<<module->GetName()<<"\t=\t"<<module->isEnabled();
             module->PrintConfig(conf_file);
         }
     }
 
-    conf_file<<"\n\n#Integrate sensor signal from TimeSensorLow to TimeSensorHigh - ns";
-    conf_file<<"\nTimeSensorLow\t=\t"<<config_tct->FTlow();
-    conf_file<<"\nTimeSensorHigh\t=\t"<<config_tct->FThigh();
+    conf_file<<"\n\n#Integrate sensor signal for channel 1 from TimeSensorLow to TimeSensorHigh - ns";
+    conf_file<<"\nTimeSensorLow1\t=\t"<<config_tct->FTlowCH1();
+    conf_file<<"\nTimeSensorHigh1\t=\t"<<config_tct->FThighCH1();
+    conf_file<<"\n\n#Integrate sensor signal for channel 2 from TimeSensorLow to TimeSensorHigh - ns";
+    conf_file<<"\nTimeSensorLow2\t=\t"<<config_tct->FTlowCH2();
+    conf_file<<"\nTimeSensorHigh2\t=\t"<<config_tct->FThighCH2();
     conf_file<<"\n#Integrate photodiode signal from TimeDiodeLow to TimeDiodeHigh - ns";
     conf_file<<"\nTimeDiodeLow\t=\t"<<config_tct->FDLow();
     conf_file<<"\nTimeDiodeHigh\t=\t"<<config_tct->FDHigh();

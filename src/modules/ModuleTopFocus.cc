@@ -23,7 +23,7 @@ bool ModuleTopFocus::Analysis() {
     Float_t Ss,Os;                       // Optical axis step
     Float_t Sc0,Opt0;
 
-    Int_t ChNumber=(config->CH_Det())-1;              // select the oscilloscope channel
+    Int_t ChNumber=(config->CH1_Det())-1;              // select the oscilloscope channel
     Int_t optic_axis=(config->OptAxis())-1;            // select optic axis (0=x,1=y,2=z)
     Int_t scanning_axis=config->ScAxis()-1;         // select scanning axis (0=x,1=y,2=z)
 
@@ -47,7 +47,7 @@ bool ModuleTopFocus::Analysis() {
     SwitchAxis(scanning_axis,numS,Ss,Sc0);
 
     //calculate the arb charge from the current
-    CalculateCharges(ChNumber,optic_axis,numO,scanning_axis,numS,cc,config->FTlow(),config->FThigh());
+    CalculateCharges(ChNumber,optic_axis,numO,scanning_axis,numS,cc,config->FTlowCH1(),config->FThighCH1());
 
     //laser charge distribution
     if(config->CH_PhDiode()) {
