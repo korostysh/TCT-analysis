@@ -54,14 +54,10 @@ void tct_config::SetParameters(std::map<std::string, std::string> id_val){
         if(i.first == "CorrectBias")          _CorrectBias = atof((i.second).c_str());
 
         //modular system
-        if(i.first == "Focus_Search")		{
-            RegisterModule(new ModuleTopFocus(this,"Focus_Search",_Top,"Focus Search"),static_cast<bool>(atoi((i.second).c_str())));
-            RegisterModule(new ModuleEdgeFocus(this,"Focus_Search",_Edge,"Focus Search"),static_cast<bool>(atoi((i.second).c_str())));
-        }
-        if(i.first == "Sensor_Search")		{
-            RegisterModule(new ModuleTopFindSensor(this,"Sensor_Search",_Top,"Sensor Position Search"),static_cast<bool>(atoi((i.second).c_str())));
-            RegisterModule(new ModuleTopFindSensor(this,"Sensor_Search",_Edge,"Sensor Position Search"),static_cast<bool>(atoi((i.second).c_str())));
-        }
+        if(i.first == "Focus_Search_Top")	    	RegisterModule(new ModuleTopFocus(this,"Focus_Search",_Top,"Focus Search"),static_cast<bool>(atoi((i.second).c_str())));
+        if(i.first == "Focus_Search_Edge")	    	RegisterModule(new ModuleEdgeFocus(this,"Focus_Search",_Edge,"Focus Search"),static_cast<bool>(atoi((i.second).c_str())));
+        if(i.first == "Sensor_Search_Top")		    RegisterModule(new ModuleTopFindSensor(this,"Sensor_Search",_Top,"Sensor Position Search"),static_cast<bool>(atoi((i.second).c_str())));
+        if(i.first == "Sensor_Search_Edge")         RegisterModule(new ModuleTopFindSensor(this,"Sensor_Search",_Edge,"Sensor Position Search"),static_cast<bool>(atoi((i.second).c_str())));
         if(i.first == "Double_Channel_Analysis")    RegisterModule(new ModuleDoubleChannelAnalysis(this,"Double_Channel_Analysis",_Top,"Double Channel Analysis"),static_cast<bool>(atoi((i.second).c_str())));
         if(i.first == "TopDepletionVoltage")		RegisterModule(new ModuleTopDepletion(this,"TopDepletionVoltage",_Top,"Depletion Voltage"),static_cast<bool>(atoi((i.second).c_str())));
         if(i.first == "TopMobility")                RegisterModule(new ModuleTopMobility(this,"TopMobility",_Top,"Charge Carriers Mobility"),static_cast<bool>(atoi((i.second).c_str())));

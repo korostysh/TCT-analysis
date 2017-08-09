@@ -162,28 +162,24 @@ bool ModuleDoubleChannelAnalysis::CheckModuleData() {
 
     std::cout<<"\t- DO "<<GetTitle()<<"(type - "<<GetType()<<")\n";
 
-    Int_t NOpt;
+
     Int_t NSc;
     std::cout<<"\t\t-- Optical Axis: "<< config->OptAxis() <<std::endl;
-    switch(config->OptAxis()) {
-    case 1: NOpt = stct->Nx; break;
-    case 2: NOpt = stct->Ny; break;
-    case 3: NOpt = stct->Nz; break;
-    }
-    if(NOpt>=1) std::cout<<"\t\t\tOptical axis scan contains "<<NOpt<<" points. OK"<<std::endl;
-    else {
-        std::cout<<"\t\t\tOptical axis contains only "<<NOpt<<" points. Not enough for focusing."<<std::endl;
-        return false;
-    }
+    std::cout<<"\t\t-- Scaning Axis: "<< config->ScAxis() <<std::endl;
+    std::cout<<"\t\t-- Another Axis: "<< 3 - (config ->ScAxis()-1) - (config->OptAxis()-1) + 1 <<std::endl;
+    std::cout<<"\t\t-- First Channel: "<< config->CH1_Det() <<std::endl;
+    std::cout<<"\t\t-- Second Channel: "<< config->CH2_Det() <<std::endl;
+
+
     std::cout<<"\t\t-- Scanning Axis: "<< config->ScAxis() <<std::endl;
     switch(config->ScAxis()) {
     case 1: NSc = stct->Nx; break;
     case 2: NSc = stct->Ny; break;
     case 3: NSc = stct->Nz; break;
     }
-    if(NSc>10) std::cout<<"\t\t\tScanning axis contains "<<NSc<<" points. OK"<<std::endl;
+    if(NSc>5) std::cout<<"\t\t\tScanning axis contains "<<NSc<<" points. OK"<<std::endl;
     else {
-        std::cout<<"\t\t\tScanning axis contains only "<<NSc<<" point. Not enough for focusing."<<std::endl;
+        std::cout<<"\t\t\tScanning axis contains only "<<NSc<<" point. Not enough for graph plots."<<std::endl;
         return false;
     }
 

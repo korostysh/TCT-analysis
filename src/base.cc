@@ -688,6 +688,7 @@ void base::on_actionSave_config_triggered()
     conf_file<<"\n# 0-top,1-edge,2-bottom";
     conf_file<<"\nTCT_Mode\t=\t"<<config_tct->TCT_Mode();
 
+
     bool focus_top = false;
     bool focus_edge = false;
     bool sensor_search_top = false;
@@ -701,13 +702,16 @@ void base::on_actionSave_config_triggered()
         if(strcmp(module->GetName(),"Sensor_Search")==0) {
             if((int)module->GetType()==0) sensor_search_top = module->isEnabled();
             if((int)module->GetType()==1) sensor_search_edge = module->isEnabled();
-        }
+        }      
     }
+
     conf_file<<"\n\n#Scanning over X and Y to find position of the sensor.";
-    conf_file<<"\n"<<"Sensor_Search"<<"\t=\t"<<(sensor_search_top || sensor_search_edge);
+    conf_file<<"\n"<<"Sensor_Search_Top"<<"\t=\t"<< sensor_search_top ;
+    conf_file<<"\n"<<"Sensor_Search_Edge"<<"\t=\t"<< sensor_search_edge ;
 
     conf_file<<"\n\n#Scanning over optical and perpendiculr to strip axes (or along the detector depth in case of edge-tct), fitting the best position.";
-    conf_file<<"\n"<<"Focus_Search"<<"\t=\t"<<(focus_top || focus_edge);
+    conf_file<<"\n"<<"Focus_Search_Top"<<"\t=\t"<<focus_top;
+    conf_file<<"\n"<<"Focus_Search_Edge"<<"\t=\t"<< focus_edge;
 
     for(int i=0; i<config_tct->GetNumberOfModules(); i++) {
         TCT::TCTModule* module = config_tct->GetModule(i);
